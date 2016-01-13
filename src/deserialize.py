@@ -241,10 +241,15 @@ def parse_TxOut(vds, i):
 
 
 def parse_Transaction(vds, is_coinbase):
+    LEGACY_VERSION_1 = 1
+    LEGACY_VERSION_2 = 2
+    CURRENT_VERSION = 3
+
     d = {}
     start = vds.read_cursor
     d['version'] = vds.read_int32()
-    d['time'] = vds.read_int32()
+    if d['version'] > LEGACY_VERSION_2:
+        d['time'] = vds.read_int32()
     n_vin = vds.read_compact_size()
     d['inputs'] = []
     for i in xrange(n_vin):
@@ -263,6 +268,9 @@ def parse_Transaction(vds, is_coinbase):
             d['outputs'].append(o)
 
     d['lockTime'] = vds.read_uint32()
+    if d['version'] > LEGACY_VERSION_1:
+        d['comment'] = vds.read_string()
+    
     return d
 
 
