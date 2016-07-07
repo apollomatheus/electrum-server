@@ -26,6 +26,8 @@ import threading
 import time
 import hashlib
 import struct
+from calendar import timegm
+from time import strptime
 
 __b58chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 __b58base = len(__b58chars)
@@ -222,6 +224,8 @@ def DecodeBase58Check(psz):
         return key
 
 
+def timestamp_safe(t):
+    return t if isinstance(t, int) else timegm(strptime(t, "%Y-%m-%d %H:%M:%S %Z"))
 
 
 ########### end pywallet functions #######################
