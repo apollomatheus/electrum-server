@@ -28,6 +28,7 @@ import hashlib
 import struct
 from calendar import timegm
 from time import strptime
+import x13_hash
 
 __b58chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 __b58base = len(__b58chars)
@@ -43,6 +44,7 @@ def rev_hex(s):
 
 Hash = lambda x: hashlib.sha256(hashlib.sha256(x).digest()).digest()
 
+HashX13 = lambda x: x13_hash.getPoWHash(x)
 
 hash_encode = lambda x: x[::-1].encode('hex')
 
